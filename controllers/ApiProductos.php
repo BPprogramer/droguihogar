@@ -190,6 +190,7 @@ class ApiProductos
                 $codigo,
                 $producto->nombre,
                 $stock,
+                $producto->stock_minimo,
                 number_format($precio_compra),
                 number_format($producto->precio_venta),
                 $acciones
@@ -256,6 +257,7 @@ class ApiProductos
             'id' => $producto->id,
             'nombre' => $producto->nombre,
             'precio_venta' => $producto->precio_venta,
+            'stock_minimo' => $producto->stock_minimo,
             // 'precio_compra' => $precio_compra,
             'stock' => $stock
         ]);

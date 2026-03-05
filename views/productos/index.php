@@ -31,6 +31,7 @@
                   <th>CODIGO</th>
                   <th>PRODUCTO</th>
                   <th>DISPONIBLES</th>
+                  <th>INVENTARIO MINIMO</th>
                   <th>PRECIO COMPRA</th>
                   <th>PRECIO VENTA</th>
                   <th class="text-center">Acciones</th>
