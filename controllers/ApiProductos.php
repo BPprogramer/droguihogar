@@ -312,7 +312,6 @@ class ApiProductos
                 $producto->nombre,
                 $stock_html,
                 $producto->stock_minimo,
-                number_format($precio_compra),
                 $proveedor->nombre ?? '',
                 $proveedor->celular ?? ''
             ];
