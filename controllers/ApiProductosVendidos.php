@@ -2,77 +2,82 @@
 
 namespace Controllers;
 
-use DateTime;
-use Model\Producto;
 use Model\Venta;
-use Model\ProductosVenta;
 
 class ApiProductosVendidos
 {
     public static function productosVendidos()
     {
-        // Obtener las fechas de los parámetros GET
+
         $fecha_inicial = $_GET['fecha-inicial'];
         $fecha_final = $_GET['fecha-final'];
 
-        // Convertir las fechas a objetos DateTime
-        $fecha_inicial_dt = new DateTime($fecha_inicial);
-        $fecha_final_dt = new DateTime($fecha_final);
+        $db = Venta::getDB();
 
-        // Obtener todos los productos vendidos
-        $productos_ventas = ProductosVenta::all();
+        $query = "
+            SELECT 
+                p.id,
+                p.codigo,
+                p.nombre,
 
-        // Array para almacenar los productos vendidos dentro del rango de fechas
-        $productos_vendidos = [];
+                pv.cantidad,
 
-        // Filtrar productos vendidos dentro del rango de fechas
-        foreach ($productos_ventas as $producto) {
-            // Obtener la venta asociada al producto
-            $venta = Venta::find($producto->venta_id);
+                /* costo real desde lotes */
+                COALESCE(SUM(pvl.cantidad * lp.precio_compra),0) AS total_compra,
 
-            // Separar la fecha y la hora de la venta
-            $fecha = explode(" ", $venta->fecha);
+                /* costo unitario */
+                COALESCE(
+                    SUM(pvl.cantidad * lp.precio_compra) / pv.cantidad,
+                0) AS precio_compra,
 
-            // Convertir la fecha de la venta a objeto DateTime
-            $fecha_dt = new DateTime($fecha[0]);
+                pv.precio_factura AS precio_venta,
 
-            // Verificar si la fecha de la venta está dentro del rango
-            if ($fecha_dt >= $fecha_inicial_dt && $fecha_dt <= $fecha_final_dt) {
-                $producto->fecha = $fecha[0]; // Agregar la fecha al producto
-                $productos_vendidos[] = $producto; // Agregar el producto a la lista
-            }
-        }
+                pv.precio_factura * pv.cantidad AS total_venta
 
-        // Array para almacenar los datos de los productos vendidos
+            FROM productos_venta pv
+
+            JOIN ventas v
+                ON v.id = pv.venta_id
+
+            JOIN productos p
+                ON p.id = pv.producto_id
+
+            LEFT JOIN productos_venta_lotes pvl
+                ON pvl.producto_venta_id = pv.id
+
+            LEFT JOIN lotes_productos lp
+                ON lp.id = pvl.lote_producto_id
+
+            WHERE DATE(v.fecha) BETWEEN '{$fecha_inicial}' AND '{$fecha_final}'
+
+            GROUP BY pv.id
+        ";
+
+        $result = $db->query($query);
+
         $data = [];
+        $i = 1;
 
-        // Recorrer los productos vendidos filtrados
-        foreach ($productos_vendidos as $producto) {
-            // Obtener la información del producto
-            $info_producto = Producto::find($producto->producto_id);
+        while ($row = $result->fetch_assoc()) {
 
-            // Calcular el total (precio * cantidad)
-            $total = $producto->precio * $producto->cantidad;
-
-            // Agregar los datos del producto vendido al array
             $data[] = [
-                count($data) + 1, // Índice (empezando desde 1)
-                $info_producto->id, // ID del producto
-                $info_producto->codigo, // Código del producto
-                $info_producto->nombre, // Nombre del producto
-                $producto->cantidad, // Cantidad vendida
-             
-                '$' . number_format($info_producto->precio_compra), // Precio unitario
-                '$' . number_format($info_producto->precio_compra*$producto->cantidad), // Precio unitario
-                '$' . number_format($producto->precio), // Precio unitario
-                '$' . number_format($total) // Total (precio * cantidad)
+                $i++,
+                $row['id'],
+                $row['codigo'],
+                $row['nombre'],
+
+                $row['cantidad'],
+
+                '$' . number_format($row['precio_compra']),
+                '$' . number_format($row['total_compra']),
+
+                '$' . number_format($row['precio_venta']),
+                '$' . number_format($row['total_venta']),
             ];
         }
 
-        // Generar el JSON final
-        $datoJson = json_encode(["data" => $data], JSON_UNESCAPED_SLASHES);
-
-        // Imprimir el JSON
-        echo $datoJson;
+        echo json_encode([
+            "data" => $data
+        ], JSON_UNESCAPED_SLASHES);
     }
 }

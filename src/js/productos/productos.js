@@ -5,7 +5,7 @@
         const formulario = document.querySelector('#productoForm');
         const selectCategorias = document.querySelector('#categoria_id');
         const selectProveedores = document.querySelector('#proveedor_id');
-        let formularioValidador;
+
         let idCategoria = null;
         let idProveedor = null;
         let tablaProductos;
@@ -15,11 +15,8 @@
         const codigo = document.querySelector('#codigo');
         const categoria_id = document.querySelector('#categoria_id');
         const proveedor_id = document.querySelector('#proveedor_id');
-        const stock = document.querySelector('#stock');
         const stock_minimo = document.querySelector('#stock_minimo');
-        const precio_compra = document.querySelector('#precio_compra');
         const precio_venta = document.querySelector('#precio_venta');
-        const porcentaje_venta = document.querySelector('#porcentaje_venta');
 
         const btnSubmit = document.querySelector('#btnSubmit');
         btnSubmit.addEventListener('click', function () {
@@ -52,9 +49,10 @@
 
         function alertaEliminarProducto(id, e) {
 
-            const nombre = e.currentTarget.parentElement.parentElement.parentElement.childNodes[2].textContent;
-            console.log(nombre)
+            // const nombre = e.currentTarget.parentElement.parentElement.parentElement.childNodes[2].textContent;
 
+            const fila = $(e.currentTarget).closest('tr')
+            const nombre = fila.find('td').eq(2).text()
             Swal.fire({
                 icon: 'warning',
                 html: `<h2 class="">esta seguro de eliminar el producto <span class="font-weight-bold"> ${nombre} </span>?</h2><br><p>Esta acción no se puede deshacer</p>`,
@@ -220,14 +218,7 @@
 
         function llenarSelectCategorias(categorias) {
             limpiarHtml(selectCategorias);
-            // llenarPrimerOption(selectCategorias);
 
-            // const opcionDisabled =   document.createElement('OPTION');
-            //     opcionDisabled.textContent = '--seleccione un producto--';
-            //     opcionDisabled.disabled = true;
-            //     opcionDisabled.selected = true;
-
-            //     selectCategorias.appendChild(opcionDisabled); 
 
             categorias.forEach(categoria => {
 
@@ -243,24 +234,11 @@
                 selectCategorias.appendChild(opcion)
 
             });
-            // $('.selectCategoria').select2()
-            // $('.selectProveedor').select2()
-            // $('.select2bs4').select2({
-            //     theme: 'bootstrap4'
-            // })
+
 
         }
         function llenarSelectProveedores(proveedores) {
             limpiarHtml(selectProveedores);
-
-            // const opcionDisabled =   document.createElement('OPTION');
-            //     opcionDisabled.textContent = '--seleccione un producto--';
-            //     opcionDisabled.disabled = true;
-            //     opcionDisabled.selected = true;
-
-            //     selectProveedores.appendChild(opcionDisabled); 
-
-            //  llenarPrimerOption(selectProveedores);
             proveedores.forEach(proveedor => {
 
                 const opcion = document.createElement('OPTION');
@@ -292,11 +270,9 @@
             datos.append('codigo', (codigo.value).trim());
             datos.append('categoria_id', (categoria_id.value));
             datos.append('proveedor_id', (proveedor_id.value));
-            datos.append('stock', (stock.value));
             datos.append('stock_minimo', (stock_minimo.value));
-            datos.append('precio_compra', (precio_compra.value));
             datos.append('precio_venta', (precio_venta.value));
-            datos.append('porcentaje_venta', (porcentaje_venta.value));
+      
 
             btnSubmit.disabled = true;
 
@@ -391,11 +367,10 @@
             idProveedor = resultado.proveedor_id;
             nombre.value = (resultado.nombre).toUpperCase();
             codigo.value = resultado.codigo;
-            stock.value = resultado.stock;
+
             stock_minimo.value = resultado.stock_minimo;
-            precio_compra.value = (parseFloat(resultado.precio_compra)).toLocaleString('en');
             precio_venta.value = (parseFloat(resultado.precio_venta)).toLocaleString('en');
-            porcentaje_venta.value = resultado.porcentaje_venta;
+
 
         }
         function inicializarValidador() {
@@ -415,40 +390,27 @@
 
                     },
 
-                    stock: {
-                        required: true
-                    },
+
                     stock_minimo: {
                         required: true
                     },
-                    precio_compra: {
-                        required: true
-                    },
+
                     precio_venta: {
                         required: true
-                    },
-                    porcentaje_venta: {
-                        required: true
                     }
+                  
                 },
                 messages: {
                     nombre: {
                         required: "El nombre es obligatorio"
                     },
-                    stock: {
-                        required: 'El stock inicial es obligatorio'
-                    },
+
                     stock_minimo: {
                         required: 'El Stock mínimo es obligatorio'
                     },
-                    precio_compra: {
-                        required: 'El precio de compra es obligatorio'
-                    },
+
                     precio_venta: {
                         required: 'El precio de venta es obligatorio'
-                    },
-                    porcentaje_venta: {
-                        required: 'El porcentaje de venta es obligatorio'
                     }
 
                 },
@@ -469,14 +431,6 @@
             inicializarValidador();
         });
 
-        // function llenarPrimerOption(referencia){
-        //     const optionDefault =  document.createElement('OPTION');
-        //     optionDefault.textContent = 'Seleccione';
-
-
-        //     optionDefault.value=0;
-        //     referencia.appendChild(optionDefault)
-        // }
         function limpiarHtml(referencia) {
             while (referencia.firstChild) {
                 referencia.removeChild(referencia.firstChild);

@@ -1,3 +1,7 @@
 @use 'base';
 @use 'ventas';
 @use 'UI';
+
+#toastsContainerTopRight {
+    z-index: 2000 !important;
+}

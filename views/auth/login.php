@@ -1,6 +1,6 @@
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>PRODUCTOS</b>TECN</a>
+    <a href="../../index2.html"><b>DROGUI</b>HOGAR</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -32,7 +32,7 @@
           <div class="row">
             <!-- /.col -->
             <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block" id="btnSubmit">Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block" id="btnSubmit">Iniciar sesión</button>
             </div>
             <!-- /.col -->
         </div>

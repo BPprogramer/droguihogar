@@ -63,6 +63,7 @@
             const datos = new FormData();
             datos.append('fecha', fecha);
             const url = `${location.origin}/api/info-general`;
+            console.log(url)
 
             try {
                 const respuesta = await fetch(url, {

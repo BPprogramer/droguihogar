@@ -3,7 +3,7 @@
 
   <a href="/inicio" class="brand-link">
     <img src="../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light">PRODUCTOSTECN</span>
+    <span class="brand-text font-weight-light">DROGUIHOGAR</span>
   </a>
 
   <!-- Sidebar -->
@@ -83,7 +83,7 @@
 
           </ul>
         </li>
-  
+
 
         <li class="nav-item">
           <a href="" class="nav-link <?php echo (pagina_actual('fiados') || pagina_actual('fiados')) ? 'active' : ''; ?>
@@ -136,8 +136,20 @@
             </a>
           </li>
         <?php } ?>
+ 
+        <?php if ($_SESSION['roll'] == 1) { ?>
+          <li class="nav-item">
+            <a href="/compras" class="nav-link <?php echo $_SERVER['REQUEST_URI'] == "/compras" ? 'active' : '' ?>">
+              <i class="nav-icon  fas fa-shopping-cart"></i>
+              <p>
+                Compras
+
+              </p>
+            </a>
+          </li>
+        <?php } ?>
         <li class="nav-item">
-          <a href="/compras" class="nav-link <?php echo pagina_actual('/compras') ? 'active' : '' ?>">
+          <a href="/inventario-bajo" class="nav-link <?php echo pagina_actual('/inventario-bajo') ? 'active' : '' ?>">
             <i class="nav-icon fa-solid fa-bag-shopping"></i>
             <p>
               Avastesimiento

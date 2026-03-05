@@ -9,7 +9,7 @@
             id: '',
             nombre: '',
             cantidad: '',
-            precio_compra: '',
+            // precio_compra: '',
             precio_venta: '', //este es el precio de evnta de esta venta  ya que el usuario puede rebajarle al producto al momento  de venderlo
             // precio: '',
             precio_original: '', //este es el percio de venta con el que se registro el producto
@@ -20,7 +20,7 @@
             total_sin_descuento: '',
             total_pagar: '',
             descuento: '',
-            costo: '',
+            // costo: '',
             total_libre: ''
 
 
@@ -82,6 +82,7 @@
             try {
                 const respuesta = await fetch(`${location.origin}/api/productos-ventas`);
                 const resultado = await respuesta.json();
+                
                 listadoProductos = resultado;
                 productoPorCodigo(listadoProductos);
 
@@ -314,7 +315,7 @@
                     id: productoVenta.id,
                     nombre: productoVenta.nombre,
                     cantidad: productoVenta.cantidad,
-                    precio_compra: productoVenta.precio_compra,
+                    // precio_compra: productoVenta.precio_compra,
                     precio_venta: productoVenta.precio_factura,
                     // precio: productoVenta.precio,
                     precio_original: productoVenta.precio_venta,
@@ -413,7 +414,7 @@
             datos.append('total_factura', valoresObj.total_pagar); //total de esta venta
             datos.append('total', valoresObj.total_sin_descuento); //total de sin descuento
 
-            datos.append('costo', valoresObj.costo);
+            // datos.append('costo', valoresObj.costo);
             datos.append('descuento', valoresObj.descuento);
             datos.append('metodo_pago', medotodoPago.value);
             if (medotodoPago.value != 1) {
@@ -443,7 +444,7 @@
             datos.append('direccion_cliente', direccionCliente.value);
             datos.append('email_cliente', emailCliente.value);
           
-
+            console.log([...datos]);
             let url;
             if (ventaId) {
                 url = `${location.origin}/api/editar-venta`;
@@ -502,7 +503,7 @@
                 id: '',
                 nombre: '',
                 cantidad: '',
-                precio_compra: '',
+                // precio_compra: '',
                 precio_venta: '',
 
                 precio_original: '',
@@ -513,7 +514,7 @@
                 total_sin_descuento: '',
                 total_pagar: '',
                 descuento: '',
-                costo: ''
+                // costo: ''
 
 
             }
@@ -911,13 +912,13 @@
 
             let total = 0; //valor a pagar con el precio de venta original
             let total_pagar = 0; //valor a pagar con modificaciones de precios 
-            let total_costo = 0;
+            // let total_costo = 0;
             // let total_libre = 0;
             productosArray.forEach(producto => {
 
                 total = total + producto.cantidad * producto.precio_original;
                 total_pagar = total_pagar + producto.cantidad * producto.precio_venta;
-                total_costo = total_costo + producto.cantidad * producto.precio_compra;
+                // total_costo = total_costo + producto.cantidad * producto.precio_compra;
                 // total_libre = total_libre + producto.cantidad * producto.precio;
             })
           
@@ -936,7 +937,7 @@
             valoresObj.total_sin_descuento = total;
             valoresObj.total_pagar = total_pagar;
             valoresObj.descuento = !isNaN(Number(descuento.toFixed(2))) ? Number(descuento.toFixed(2)) : 0;
-            valoresObj.costo = total_costo;
+            // valoresObj.costo = total_costo;
             // valoresObj.total_libre = total_libre;
 
 
@@ -1056,12 +1057,13 @@
 
 
                 if (resultado.stock > 0) {
-                    const { id, nombre, precio_venta, stock, precio_compra } = resultado;
+                   // const { id, nombre, precio_venta, stock, precio_compra } = resultado;
+                    const { id, nombre, precio_venta, stock } = resultado;
                     productoObj = {
                         id,
                         nombre,
                         cantidad: 1,
-                        precio_compra,
+                        // precio_compra,
                         precio_venta,
                         // precio: parseFloat(precio_venta),    //esto lo quitaos porque es paramercado libre
                         precio_original: parseFloat(precio_venta),

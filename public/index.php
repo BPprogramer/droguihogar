@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once __DIR__ . '/../includes/app.php';
 
@@ -16,6 +16,7 @@ use Controllers\ApiReportes;
 use Controllers\ApiUsuarios;
 use Controllers\ApiProductos;
 use Controllers\ApiCategorias;
+use Controllers\ApiCompras;
 use Controllers\ApiProveedores;
 use Controllers\ApiMercadoLibre;
 use Controllers\ApiPagos;
@@ -33,6 +34,7 @@ use Controllers\ProveedoresController;
 use Controllers\MercadoLibreController;
 use Controllers\TransaccionesController;
 use Controllers\AvastesimientoController;
+use Controllers\CompraController;
 use Controllers\PagosController;
 use Controllers\ProductosVentasController;
 
@@ -47,27 +49,28 @@ $router->get('/logout', [UsuariosController::class, 'logout']);
 
 //DasboardController
 
-$router->get('/inicio',[DashboardController::class, 'index']);
+$router->get('/inicio', [DashboardController::class, 'index']);
 $router->get('/usuarios', [UsuariosController::class, 'index']);
 $router->get('/categorias', [CategoriasController::class, 'index']);
 $router->get('/clientes', [ClientesController::class, 'index']);
 $router->get('/productos', [ProductosController::class, 'index']);
+$router->get('/compras', [CompraController::class, 'index']);
 $router->get('/proveedores', [ProveedoresController::class, 'index']);
-$router->get('/cajas',[CajasController::class, 'index']);
-$router->get('/fiados',[FiadosController::class, 'index']);
-$router->get('/creditos',[FiadosController::class, 'index']);
-$router->get('/pagos',[PagosController::class, 'index']);
-$router->get('/ingresos',[IngresosController::class, 'index']);
-$router->get('/egresos',[EgresosController::class, 'index']);
-$router->get('/compras',[AvastesimientoController::class, 'index']);
+$router->get('/cajas', [CajasController::class, 'index']);
+$router->get('/fiados', [FiadosController::class, 'index']);
+$router->get('/creditos', [FiadosController::class, 'index']);
+$router->get('/pagos', [PagosController::class, 'index']);
+$router->get('/ingresos', [IngresosController::class, 'index']);
+$router->get('/egresos', [EgresosController::class, 'index']);
+$router->get('/inventario-bajo', [AvastesimientoController::class, 'index']);
 // $router->get('/mercadolibre',[MercadoLibreController::class, 'index']);
-$router->get('/productos-ventas',[ProductosVentasController::class, 'index']);
+$router->get('/productos-ventas', [ProductosVentasController::class, 'index']);
 
 /* VENTAS CONTROLLERS */
 
-$router->get('/crear-venta',[VentasController::class, 'crear']);
-$router->get('/ventas',[VentasController::class, 'index']);
-$router->get('/reporte-ventas',[VentasController::class, 'reporte']);
+$router->get('/crear-venta', [VentasController::class, 'crear']);
+$router->get('/ventas', [VentasController::class, 'index']);
+$router->get('/reporte-ventas', [VentasController::class, 'reporte']);
 
 
 
@@ -119,61 +122,67 @@ $router->get('/api/productos-vendidos', [ApiProductosVendidos::class, 'productos
 
 // API productos
 $router->get('/api/productos', [ApiProductos::class, 'productos']);
+$router->get('/api/productos/seleccionables', [ApiProductos::class, 'productosSeleccionables']);
 $router->post('/api/producto/crear', [ApiProductos::class, 'crear']);
 $router->post('/api/producto/editar', [ApiProductos::class, 'editar']);
 $router->post('/api/producto/editar-stock', [ApiProductos::class, 'editarStock']);
 $router->post('/api/producto/eliminar', [ApiProductos::class, 'eliminar']);
 $router->get('/api/producto', [ApiProductos::class, 'consultarProducto']);
-$router->get('/api/compras', [ApiProductos::class, 'avastecimiento']);
+$router->get('/api/productos/inventario-bajo', [ApiProductos::class, 'inventarioBajo']);
 
 
+$router->post('/api/compras/crear', [ApiCompras::class, 'crear']);
+$router->get('/api/compras', [ApiCompras::class, 'compras']);
+$router->post('/api/compras/editar', [ApiCompras::class, 'editar']);
+$router->get('/api/compras/compra', [ApiCompras::class, 'compra']);
+$router->post('/api/compras/eliminar', [ApiCompras::class, 'eliminar']);
 
 
 
 /* API DE LAS VENTAS */
-$router->get('/api/ventas',[ApiVentas::class, 'ventas']);
-$router->get('/api/venta',[ApiVentas::class, 'venta']);
-$router->post('/api/crear-venta',[ApiVentas::class, 'crear']);
-$router->post('/api/revisar-venta',[ApiVentas::class, 'revisarPagosAsociados']);
-$router->post('/api/editar-venta',[ApiVentas::class, 'editar']);
-$router->post('/api/venta/eliminar',[ApiVentas::class, 'eliminar']);
-$router->get('/api/productos-ventas',[ApiVentas::class, 'productos']);
-$router->get('/api/clientes-ventas',[ApiVentas::class, 'clientes']);
-$router->get('/api/clientes-ventas-fiadas',[ApiVentas::class, 'clientesFiados']);
-$router->get('/api/codigo-venta',[ApiVentas::class, 'codigoVenta']);
+$router->get('/api/ventas', [ApiVentas::class, 'ventas']);
+$router->get('/api/venta', [ApiVentas::class, 'venta']);
+$router->post('/api/crear-venta', [ApiVentas::class, 'crear']);
+$router->post('/api/revisar-venta', [ApiVentas::class, 'revisarPagosAsociados']);
+$router->post('/api/editar-venta', [ApiVentas::class, 'editar']);
+$router->post('/api/venta/eliminar', [ApiVentas::class, 'eliminar']);
+$router->get('/api/productos-ventas', [ApiVentas::class, 'productos']);
+$router->get('/api/clientes-ventas', [ApiVentas::class, 'clientes']);
+$router->get('/api/clientes-ventas-fiadas', [ApiVentas::class, 'clientesFiados']);
+$router->get('/api/codigo-venta', [ApiVentas::class, 'codigoVenta']);
 
-$router->get('/api/imprimir-venta',[ApiVentas::class, 'imprimirVenta']);
+$router->get('/api/imprimir-venta', [ApiVentas::class, 'imprimirVenta']);
 
 
 
 
 /* api a las ventas por mercado libre */
-$router->get('/api/mercadolibre',[ApiMercadoLibre::class, 'index']);
-$router->get('/api/pagos-auto',[ApiMercadoLibre::class, 'pagosAuto']);
+$router->get('/api/mercadolibre', [ApiMercadoLibre::class, 'index']);
+$router->get('/api/pagos-auto', [ApiMercadoLibre::class, 'pagosAuto']);
 
 /* API ereporte de ventas */
-$router->post('/api/info-general',[ApiReportes::class, 'info']);
+$router->post('/api/info-general', [ApiReportes::class, 'info']);
 
 
 /* API DE LAS cajas*/
 
-$router->get('/api/cajas',[ApiCajas::class, 'cajas']);
-$router->get('/api/caja',[ApiCajas::class, 'caja']);
-$router->post('/api/caja/crear',[ApiCajas::class, 'crear']);
-$router->post('/api/caja/editar',[ApiCajas::class, 'editar']);
-$router->post('/api/caja/eliminar',[ApiCajas::class, 'eliminar']);
-$router->post('/api/caja/cerrar',[ApiCajas::class, 'cerrar']);
+$router->get('/api/cajas', [ApiCajas::class, 'cajas']);
+$router->get('/api/caja', [ApiCajas::class, 'caja']);
+$router->post('/api/caja/crear', [ApiCajas::class, 'crear']);
+$router->post('/api/caja/editar', [ApiCajas::class, 'editar']);
+$router->post('/api/caja/eliminar', [ApiCajas::class, 'eliminar']);
+$router->post('/api/caja/cerrar', [ApiCajas::class, 'cerrar']);
 
 /* API de las cuotas o fiados */
 
-$router->get('/api/pagos-cuotas',[ApiFiados::class, 'ventasFiadas']);  /* consultamos las ventas que el cliente ha sacado fiadas sin importar si ya las pago o no  */
+$router->get('/api/pagos-cuotas', [ApiFiados::class, 'ventasFiadas']);  /* consultamos las ventas que el cliente ha sacado fiadas sin importar si ya las pago o no  */
 // $router->get('/api/cuotas',[ApiFiados::class, 'cuotas']);
-$router->get('/api/pagos',[ApiPagos::class, 'pagos']);
-$router->get('/api/pagos-por-venta',[ApiPagos::class, 'pagosPorVenta']); //consultamos los pagos asociados a una venta
+$router->get('/api/pagos', [ApiPagos::class, 'pagos']);
+$router->get('/api/pagos-por-venta', [ApiPagos::class, 'pagosPorVenta']); //consultamos los pagos asociados a una venta
 
-$router->get('/api/productos-fiados',[ApiFiados::class, 'productosFiados']);
-$router->post('/api/pagar',[ApiFiados::class, 'pagar']);
-$router->post('/api/eliminar-pago',[ApiFiados::class, 'eliminarPago']);
+$router->get('/api/productos-fiados', [ApiFiados::class, 'productosFiados']);
+$router->post('/api/pagar', [ApiFiados::class, 'pagar']);
+$router->post('/api/eliminar-pago', [ApiFiados::class, 'eliminarPago']);
 
 /* api ingresos */
 $router->get('/api/ingresos', [ApiIngresos::class, 'ingresos']);

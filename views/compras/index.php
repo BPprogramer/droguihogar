@@ -1,21 +1,22 @@
 <?php include_once __DIR__ . '/../templates/content-header.php'; ?>
 
-<section class="content" id="productos">
+<section class="content" id="compras">
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
 
         <div class="card">
+
           <div class="card-header">
             <div class="row justify-content-between">
 
               <div class="col-4">
-                <h3 class="card-title">Productos</h3>
+                <h3 class="card-title">Compras</h3>
               </div>
 
               <div class="col-4 d-flex justify-content-end">
                 <button type="button" id="registrar" class="btn bg-hover-azul text-white toolMio">
-                  Registrar Producto
+                  Registrar Compra
                 </button>
               </div>
 
@@ -28,11 +29,9 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>CODIGO</th>
-                  <th>PRODUCTO</th>
-                  <th>DISPONIBLES</th>
-                  <th>PRECIO COMPRA</th>
-                  <th>PRECIO VENTA</th>
+                  <th>PROVEEDOR</th>
+                  <th>FECHA</th>
+                  <th>TOTAL</th>
                   <th class="text-center">Acciones</th>
                 </tr>
               </thead>
@@ -49,12 +48,12 @@
 
 
 
-<div class="modal fade" id="modal-producto">
+<div class="modal fade" id="modal-compra">
   <div class="modal-dialog modal-50rem">
     <div class="modal-content">
 
       <div class="modal-header bg-azul">
-        <h4 class="modal-title text-white">Registrar Producto</h4>
+        <h4 class="modal-title text-white">Registrar Compra</h4>
 
         <button type="button" class="close" data-dismiss="modal">
           <span class="text-white">&times;</span>
@@ -63,69 +62,92 @@
 
       <div class="modal-body">
 
-        <form id="productoForm">
+        <form id="compraForm">
 
           <div class="card-body">
 
-            <div class="row">
-
-              <div class="form-group col-md-6">
-                <label for="nombre">Nombre</label>
-                <input type="text" name="nombre" class="form-control" id="nombre">
-              </div>
-
-              <div class="form-group col-md-6">
-                <label for="codigo">Código</label>
-                <input type="text" name="codigo" class="form-control" id="codigo">
-              </div>
-
-            </div>
-
-
+            <!-- proveedor y fecha -->
 
             <div class="row">
-
-              <div class="form-group col-md-6">
-                <label for="categoria_id">Categoria</label>
-                <select class="form-control selectCategoria" id="categoria_id"></select>
-              </div>
 
               <div class="form-group col-md-6">
                 <label for="proveedor_id">Proveedor</label>
                 <select class="form-control selectProveedor" id="proveedor_id"></select>
               </div>
 
-            </div>
-
-
-
-            <div class="row">
-
-
-
               <div class="form-group col-md-6">
-                <label for="stock_minimo">Stock mínimo</label>
-                <input type="number" name="stock_minimo" class="form-control" id="stock_minimo">
+                <label for="fecha">Fecha</label>
+                <input type="date" name="fecha" class="form-control" id="fecha">
               </div>
 
             </div>
-
-
-
-            <!-- NUEVO BLOQUE PARA LOTES -->
-
 
 
             <hr class="bg-azul">
 
 
+            <!-- BUSCADOR PRODUCTO -->
 
             <div class="row">
-              <div class="form-group col-md-6">
-                <label for="precio_venta">Precio venta</label>
-                <input type="text" name="precio_venta" class="form-control" id="precio_venta">
+
+              <div class="form-group col-md-8">
+                <label>Producto</label>
+                <select class="form-control select2bs4" id="selectProductos"></select>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label>Código Barras</label>
+                <input type="text" id="codigo-producto" class="form-control">
+              </div>
+
+            </div>
+
+
+            <hr class="bg-azul">
+
+
+            <!-- TABLA DETALLE -->
+
+            <div class="row">
+              <div class="col-12">
+
+                <table class="table table-bordered" id="tabla-detalle">
+
+                  <thead>
+                    <tr>
+                      <th style="width:120px">CODIGO</th>
+                      <th>PRODUCTO</th>
+                      <th style="width:120px">CANTIDAD</th>
+                      <th style="width:150px">PRECIO COMPRA</th>
+                      <th style="width:170px">VENCIMIENTO</th>
+                      <th style="width:80px"></th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="detalle-body">
+
+                  </tbody>
+
+                </table>
+
               </div>
             </div>
+
+
+            <hr class="bg-azul">
+
+
+            <!-- TOTAL -->
+
+            <div class="row justify-content-end">
+
+              <div class="form-group col-md-4">
+                <label>Total Compra</label>
+                <input type="text" name="total" class="form-control" id="total" readonly>
+              </div>
+
+            </div>
+
           </div>
 
 
@@ -142,7 +164,7 @@
 
               <div>
                 <button type="submit" id="btnSubmit" class="btn bg-hover-azul text-white">
-                  Enviar
+                  Guardar Compra
                 </button>
               </div>
 

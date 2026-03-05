@@ -3,7 +3,7 @@
 namespace Controllers;
 
 use Model\Caja;
-use Model\Cuota;
+
 use Model\Venta;
 use Model\Cliente;
 use Model\Payment;
@@ -35,10 +35,17 @@ class ApiInicio
 
 
         $ganancia_no_realizada = $total_factura - $costo; //ganancias netas sin importar si ´pagaron o no
-        $ganancia_realizada = $total_recaudos- $costo; //ganancias real 
+        $ganancia_realizada = $total_recaudos - $costo; //ganancias real 
 
-        $inventario = Producto::total('stock*precio_compra');
+        $db = Venta::getDB();
 
+        $query = "
+    SELECT COALESCE(SUM(cantidad_disponible * precio_compra),0) AS total
+    FROM lotes_productos
+";
+
+        $result = $db->query($query);
+        $inventario = $result->fetch_assoc();
         $numero_ventas = Venta::contar('pagado', 1);
         $numero_fiados = Venta::contar('pagado', 0);
         $numero_pagos = Payment::contar();
@@ -49,12 +56,13 @@ class ApiInicio
         $ganancia_realizada = $ganancia_realizada < 0 ? '-' . $valor_formateado : $valor_formateado;
 
 
+
         $informacion = [
             'total_ventas' => '$' . number_format($total_factura),
             'total_recaudos' => '$' . number_format($total_recaudos),
             'costos' => '$' . number_format($costo),
             'ganancia_no_realizada' =>  '$' . number_format($ganancia_no_realizada),
-            'ganancia_realizada' => $ganancia_realizada ,
+            'ganancia_realizada' => $ganancia_realizada,
             'inventario' => '$' . number_format($inventario['total']),
             'numero_ventas' => $numero_ventas['total'],
             'numero_fiados' => $numero_fiados['total'],
@@ -68,7 +76,7 @@ class ApiInicio
 
         ];
 
-    
+
 
         echo json_encode($informacion);
     }

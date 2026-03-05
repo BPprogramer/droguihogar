@@ -139,4 +139,8 @@ a.nav-link.active {
 .color-texto {
   color: #495057 !important;
 }
+
+#toastsContainerTopRight {
+  z-index: 2000 !important;
+}
 /*# sourceMappingURL=app.css.map */

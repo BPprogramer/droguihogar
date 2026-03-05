@@ -41,7 +41,7 @@ class ApiReportes
 
         $ganancia_no_realizada = $total_factura - $costo; //ganancias netas sin importar si ´pagaron o no
         $ganancia_realizada = $total_recaudos - $costo; //ganancias real 
-        $inventario = Producto::total('stock*precio_compra');
+
 
 
 
@@ -57,7 +57,15 @@ class ApiReportes
         $numero_clientes  = Cliente::contar();
 
 
-        $inventario = Producto::total('stock*precio_compra');
+        $db = Venta::getDB();
+
+        $query = "
+    SELECT COALESCE(SUM(cantidad_disponible * precio_compra),0) AS total
+    FROM lotes_productos
+";
+
+        $result = $db->query($query);
+        $inventario = $result->fetch_assoc();
 
         $valor_formateado = '$' . number_format(abs($ganancia_realizada));
         $ganancia_realizada = $ganancia_realizada < 0 ? '-' . $valor_formateado : $valor_formateado;

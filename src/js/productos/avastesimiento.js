@@ -1,6 +1,6 @@
 (function(){
-    const compras = document.querySelector('#compras');
-    if(compras){
+    const inventario_bajo = document.querySelector('#inventario-bajo');
+    if(inventario_bajo){
         let tablaProductosVendidos;
         const formularioStock = document.querySelector('#stockForm');
         const nombre_producto = document.querySelector('#nombre_producto');
@@ -53,7 +53,7 @@
             $("#tabla").dataTable().fnDestroy(); //por si me da error de reinicializar
     
             tablaCompras = $('#tabla').DataTable({
-                ajax: '/api/compras',
+                ajax: '/api/productos/inventario-bajo',
                 "deferRender":true,
                 "retrieve":true,
                 "proccesing":true,

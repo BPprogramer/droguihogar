@@ -3,7 +3,7 @@
 
 
 <!-- Main content -->
-<section class="content" id="compras">
+<section class="content" id="inventario-bajo">
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
@@ -26,9 +26,9 @@
                 <tr>
                   <th>#</th>
                   <th>PRODUCTO</th>
-                  <th>STOCK ACTUAL</th>
-                  <th>STOCK MINIMO</th>
-                  <th>PRECIO COMPRA</th>
+                  <th>INVENTARIO ACTUAL</th>
+                  <th>INVENTARIO MINIMO</th>
+             
                   <th>PROVEEDOR</th>
                   <th>TELEFONO</th>
                 </tr>

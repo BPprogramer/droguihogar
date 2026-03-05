@@ -190,17 +190,23 @@ class ActiveRecord
     public static function whereArray($array = [])
     {
         $query = "SELECT * FROM " . static::$tabla . " WHERE ";
+        $condiciones = [];
+
         foreach ($array as $key => $value) {
 
-            if ($key == array_key_last($array)) {
-                $query .= " $key = '$value' ORDER BY id DESC";
+            if ($value === null) {
+                $condiciones[] = "$key IS NULL";
             } else {
-                $query .= " $key = '$value' AND";
+                $valor = self::$db->escape_string($value);
+                $condiciones[] = "$key = '$valor'";
             }
         }
 
+        $query .= implode(" AND ", $condiciones);
+        $query .= " ORDER BY id DESC";
+
         $resultado = self::consultarSQL($query);
-        return  $resultado;
+        return $resultado;
     }
     public static function whereArrayJoin($array = [], $tablaPrimaria, $columnaPrimaria, $columnaForanea)
     {
