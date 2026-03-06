@@ -22,10 +22,7 @@
                             class="text-danger text-xl" id="total-deuda">0</strong></p>
                 </div>
                 <div class="" id="">
-                    <button type="button" id="pagar" class="btn bg-hover-azul text-white  text-bold">
-                        PAGAR
-
-                    </button>
+                 
                 </div>
 
 
