@@ -259,6 +259,7 @@ class ApiProductos
             'precio_venta' => $producto->precio_venta,
             'stock_minimo' => $producto->stock_minimo,
             // 'precio_compra' => $precio_compra,
+            'codigo'=>$producto->codigo,
             'stock' => $stock
         ]);
     }
