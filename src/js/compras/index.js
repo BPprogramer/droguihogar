@@ -136,9 +136,9 @@
             try {
 
                 const respuesta = await fetch(url);
-            
+
                 productos = await respuesta.json();
-     
+
                 llenarSelectProductos(productos);
 
             } catch (error) {
@@ -200,6 +200,13 @@
         /* =========================
         CODIGO DE BARRAS
         ========================= */
+        codigoProducto.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        });
 
         codigoProducto.addEventListener('input', function () {
 
@@ -217,6 +224,13 @@
 
             }
 
+        });
+        formulario.addEventListener('submit', function (e) {
+            if (document.activeElement && document.activeElement.id === 'codigo-producto') {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
         });
 
 
